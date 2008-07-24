@@ -1,6 +1,6 @@
 Name:           lha
 Version:        1.14i
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Archiving and compression utility for LHarc/lha/lzh archives
 Group:          Applications/Archiving
 License:        Distributable
@@ -49,12 +49,15 @@ rm -rf %{buildroot}
 
 
 %files
-%defattr(-,root,root)
+%defattr(-,root,root,-)
 %doc change-114* CHANGES.euc PROBLEMS.euc README.euc
 %{_bindir}/lha
 
 
 %changelog
+* Wed Jul 23 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.14i-21
+- Release bump for rpmfusion build
+
 * Sun Jan 14 2007 Ian Chapman <packages@amiga-hardware.com> 1.14i-20%{?dist}
 - Initial dribble release
 - Aesthetic spec clean-ups for publishing in dribble
