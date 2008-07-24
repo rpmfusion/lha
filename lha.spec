@@ -1,6 +1,6 @@
 Name:           lha
 Version:        1.14i
-Release:        21%{?dist}
+Release:        22%{?dist}
 Summary:        Archiving and compression utility for LHarc/lha/lzh archives
 Group:          Applications/Archiving
 License:        Distributable
@@ -55,6 +55,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Thu Jul 24 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.14i-22
+- Rebuild for buildsys cflags issue
+
 * Wed Jul 23 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.14i-21
 - Release bump for rpmfusion build
 
