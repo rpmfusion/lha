@@ -25,6 +25,7 @@ LHA is an archiving and compression utility for LHarc/lha/lzh format archives.
 # security fixes
 %patch2 -p1 -b .sec
 %patch3 -p1 -b .sec
+exit 1
 %patch4 -p1 -b .sec
 
 # Rename doc files to better represent encoding which is EUC (jp)
