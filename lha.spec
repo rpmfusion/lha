@@ -1,6 +1,6 @@
 Name:           lha
 Version:        1.14i
-Release:        22%{?dist}
+Release:        23%{?dist}
 Summary:        Archiving and compression utility for LHarc/lha/lzh archives
 Group:          Applications/Archiving
 License:        Distributable
@@ -55,6 +55,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.14i-23
+- rebuild for new F11 features
+
 * Thu Jul 24 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.14i-22
 - Rebuild for buildsys cflags issue
 
