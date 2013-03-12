@@ -1,6 +1,6 @@
 Name:           lha
 Version:        1.14i
-Release:        24%{?dist}
+Release:        25%{?dist}
 Summary:        Archiving and compression utility for LHarc/lha/lzh archives
 Group:          Applications/Archiving
 License:        Distributable
@@ -55,6 +55,9 @@ rm -rf %{buildroot}
 
 
 %changelog
+* Tue Mar 12 2013 Nicolas Chauvet <kwizart@gmail.com> - 1.14i-25
+- https://fedoraproject.org/wiki/Fedora_19_Mass_Rebuild
+
 * Thu Feb 09 2012 Nicolas Chauvet <kwizart@gmail.com> - 1.14i-24
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
