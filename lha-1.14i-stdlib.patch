@@ -1,0 +1,11 @@
+--- a/src/lha.h
++++ b/src/lha.h
+@@ -11,6 +11,7 @@
+ 		lharc.h		interface.h		slidehuf.h
+ */
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <errno.h>
+ #include <ctype.h>
+ #include <sys/types.h>
+
