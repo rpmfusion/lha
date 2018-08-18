@@ -1,55 +1,59 @@
+%global commit  6f6cbc189d23b7c3a8636819f5796654f188764e
+%global date 20161015
+%global shortcommit0 %(c=%{commit}; echo ${c:0:7})
+
 Name:           lha
 Version:        1.14i
-Release:        32%{?dist}
+Release:        33%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Archiving and compression utility for LHarc/lha/lzh archives
 Group:          Applications/Archiving
 License:        Distributable
-URL:            http://www2m.biglobe.ne.jp/~dolphin/lha/prog/
-Source0:        http://www2m.biglobe.ne.jp/~dolphin/%{name}/prog/%{name}-114i.tar.gz
-Patch0:         lha-1.14i-symlink.patch
-Patch1:         lha-1.14i-malloc.patch
-Patch2:         lha-1.14i-sec.patch
-Patch3:         lha-1.14i-dir_length_bounds_check.patch
-Patch4:         lha-1.14i-sec2.patch
-Patch5:         lha-1.14i-stdlib.patch
+URL:            https://github.com/jca02266/%{name}
+Source0:        %url/archive/%{commit}.tar.gz#/%{name}-%{commit}.tar.gz
+
+BuildRequires:  automake
+BuildRequires:  gcc
 
 %description
 LHA is an archiving and compression utility for LHarc/lha/lzh format archives.
 
 
 %prep
-%setup -qn lha-114i
-
-%patch0 -p1 -b .symlink
-%patch1 -p1 -b .malloc
-# security fixes
-%patch2 -p1 -b .sec
-%patch3 -p1 -b .sec
-%patch4 -p1 -b .sec
-%patch5 -p1 -b .stdlib
+%autosetup -n %{name}-%{commit}
+autoreconf -fiv
 
 # Rename doc files to better represent encoding which is EUC (jp)
+cd olddoc/
 mv change-114e.txt change-114e.euc
 mv change-114g.txt change-114g.euc
 mv change-114h.txt change-114h.euc
 mv change-114i.txt change-114i.euc
 
-
 %build
-make OPTIMIZE="%{optflags} -DSUPPORT_LH7 -DMKSTEMP"
+%configure
+%make_build
 
+%check
+pushd tests
+make %{?_smp_mflags} check-local
+popd
 
 %install
-mkdir -p %{buildroot}%{_bindir}
-install -m0755 src/lha %{buildroot}%{_bindir}
-
+%make_install
+mkdir -p %{buildroot}%{_mandir}/ja/mann
+install -m 644 man/lha.n %{buildroot}%{_mandir}/ja/mann/lha.n
 
 %files
-%doc change-114* CHANGES.euc PROBLEMS.euc README.euc
+%doc olddoc/change-114* olddoc/CHANGES.euc
+%doc olddoc/PROBLEMS.euc olddoc/README.euc
 %{_bindir}/lha
-
+%{_mandir}/man1/lha.1.*
+%lang(ja) %{_mandir}/ja/mann/lha.n*
 
 %changelog
+* Sat Aug 18 2018 Leigh Scott <leigh123linux@googlemail.com> - 1.14i-33.20161015git6f6cbc1
+- Switch to upstream git source
+
 * Fri Aug 17 2018 Leigh Scott <leigh123linux@googlemail.com> - 1.14i-32
 - Add missing stdlib include
 - Clean up spec file
