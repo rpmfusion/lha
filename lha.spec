@@ -1,15 +1,19 @@
-%global commit  6f6cbc189d23b7c3a8636819f5796654f188764e
-%global date 20161015
+%global commit  4f193b1e98700aa2bc9dfeef11943efc1f036154
+%global date 20230913
 %global shortcommit0 %(c=%{commit}; echo ${c:0:7})
 
 Name:           lha
 Version:        1.14i
-Release:        43%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        44%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Archiving and compression utility for LHarc/lha/lzh archives
-Group:          Applications/Archiving
-License:        Distributable
+
+# Freely redistributable without restriction, and
+# src/fnmatch.c: BSD-4-Clause (University of California-Specific)
+# src/fnmatch.h: BSD-4-Clause (University of California-Specific)
+# src/vsnprintf.c: BSD-4-Clause (University of California-Specific)
+License:        LicenseRef-Fedora-UltraPermissive AND BSD-4-Clause
 URL:            https://github.com/jca02266/%{name}
-Source0:        %url/archive/%{commit}.tar.gz#/%{name}-%{commit}.tar.gz
+Source0:        %url/archive/%{commit}/%{name}-%{commit}.tar.gz
 
 BuildRequires:  automake
 BuildRequires:  gcc
@@ -34,9 +38,7 @@ mv change-114i.txt change-114i.euc
 %make_build
 
 %check
-pushd tests
-make %{?_smp_mflags} check-local
-popd
+make %{?_smp_mflags} check-local -C tests
 
 %install
 %make_install
@@ -44,13 +46,16 @@ mkdir -p %{buildroot}%{_mandir}/ja/mann
 install -m 644 man/lha.n %{buildroot}%{_mandir}/ja/mann/lha.n
 
 %files
-%doc olddoc/change-114* olddoc/CHANGES.euc
-%doc olddoc/PROBLEMS.euc olddoc/README.euc
+%doc olddoc/change-114* olddoc/CHANGES
+%doc olddoc/PROBLEMS olddoc/README
 %{_bindir}/lha
 %{_mandir}/man1/lha.1.*
 %lang(ja) %{_mandir}/ja/mann/lha.n*
 
 %changelog
+* Sun Mar 10 2024 Antonio Trande <sagitter@fedoraproject.org> - 1.14i-44.20230913git4f193b1e
+- Commit 4f193b1e
+
 * Sun Feb 04 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.14i-43.20161015git6f6cbc1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
