@@ -4,7 +4,7 @@
 
 Name:           lha
 Version:        1.14i
-Release:        44%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        45%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Archiving and compression utility for LHarc/lha/lzh archives
 
 # Freely redistributable without restriction, and
@@ -53,6 +53,9 @@ install -m 644 man/lha.n %{buildroot}%{_mandir}/ja/mann/lha.n
 %lang(ja) %{_mandir}/ja/mann/lha.n*
 
 %changelog
+* Fri Aug 02 2024 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.14i-45.20230913git4f193b1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
+
 * Sun Mar 10 2024 Antonio Trande <sagitter@fedoraproject.org> - 1.14i-44.20230913git4f193b1e
 - Commit 4f193b1e
 
