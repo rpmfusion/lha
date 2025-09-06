@@ -4,7 +4,7 @@
 
 Name:           lha
 Version:        1.14i
-Release:        47%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
+Release:        48%{?shortcommit0:.%{date}git%{shortcommit0}}%{?dist}
 Summary:        Archiving and compression utility for LHarc/lha/lzh archives
 
 # Freely redistributable without restriction, and
@@ -14,6 +14,9 @@ Summary:        Archiving and compression utility for LHarc/lha/lzh archives
 License:        LicenseRef-Fedora-UltraPermissive AND BSD-4-Clause
 URL:            https://github.com/jca02266/%{name}
 Source0:        %url/archive/%{commit}/%{name}-%{commit}.tar.gz
+# https://github.com/jca02266/lha/pull/58
+# support gcc15 / C23
+Patch0:         lha-pr58-c23.patch
 
 BuildRequires:  automake
 BuildRequires:  gcc
@@ -23,7 +26,7 @@ LHA is an archiving and compression utility for LHarc/lha/lzh format archives.
 
 
 %prep
-%autosetup -n %{name}-%{commit}
+%autosetup -n %{name}-%{commit} -p1
 autoreconf -fiv
 
 # Rename doc files to better represent encoding which is EUC (jp)
@@ -53,6 +56,9 @@ install -m 644 man/lha.n %{buildroot}%{_mandir}/ja/mann/lha.n
 %lang(ja) %{_mandir}/ja/mann/lha.n*
 
 %changelog
+* Sat Sep 06 2025 Mamoru TASAKA <mtasaka@fedoraproject.org> - 1.14i-48.20230913git4f193b1
+- Upstream patch for C23
+
 * Sun Jul 27 2025 RPM Fusion Release Engineering <sergiomb@rpmfusion.org> - 1.14i-47.20230913git4f193b1
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_43_Mass_Rebuild
 

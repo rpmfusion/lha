@@ -1,0 +1,90 @@
+From 43d6f6fde961ecaab6895ce0f3913fe19c27e5fa Mon Sep 17 00:00:00 2001
+From: Mamoru TASAKA <mtasaka@fedoraproject.org>
+Date: Fri, 5 Sep 2025 00:14:21 +0900
+Subject: [PATCH] fix: support C23
+
+C23 now regards function declarator without a parameter type
+as prototype taking no arguments. So fix prototypes or
+parameter lists to support C23.
+
+Fixes #57 .
+---
+ src/huf.c        | 4 ++--
+ src/lha.h        | 2 +-
+ src/lhadd.c      | 2 +-
+ src/prototypes.h | 2 +-
+ src/slide.c      | 4 ++--
+ 5 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/huf.c b/src/huf.c
+index aa48c6e..832d933 100644
+--- a/src/huf.c
++++ b/src/huf.c
+@@ -235,8 +235,8 @@ send_block( /* void */ )
+ /* lh4, 5, 6, 7 */
+ void
+ output_st1(c, p)
+-    unsigned short  c;
+-    unsigned short  p;
++    unsigned int  c;
++    unsigned int  p;
+ {
+     static unsigned short cpos;
+ 
+diff --git a/src/lha.h b/src/lha.h
+index 07b2e3d..f14ac04 100644
+--- a/src/lha.h
++++ b/src/lha.h
+@@ -215,7 +215,7 @@ int fnmatch(const char *pattern, const char *string, int flags);
+ 
+ struct encode_option {
+ #if defined(__STDC__) || defined(AIX)
+-    void            (*output) ();
++    void            (*output) (unsigned int code, unsigned int pos);
+     void            (*encode_start) ();
+     void            (*encode_end) ();
+ #else
+diff --git a/src/lhadd.c b/src/lhadd.c
+index 5d0eca8..5144d77 100644
+--- a/src/lhadd.c
++++ b/src/lhadd.c
+@@ -9,7 +9,7 @@
+ /* ------------------------------------------------------------------------ */
+ #include "lha.h"
+ /* ------------------------------------------------------------------------ */
+-static void     remove_files();
++static void     remove_files(int filec, char **filev);
+ 
+ static char     new_archive_name_buffer[FILENAME_LENGTH];
+ static char    *new_archive_name;
+diff --git a/src/prototypes.h b/src/prototypes.h
+index 53896e3..664a5f4 100644
+--- a/src/prototypes.h
++++ b/src/prototypes.h
+@@ -38,7 +38,7 @@ void sjis2euc(int *p1, int *p2);
+ int cap_to_sjis(char *dst, const char *src, size_t dstsize);
+ int sjis_to_cap(char *dst, const char *src, size_t dstsize);
+ /* huf.c */
+-void output_st1(int c, int p);
++void output_st1(unsigned int c, unsigned int p);
+ unsigned char *alloc_buf(void);
+ void encode_start_st1(void);
+ void encode_end_st1(void);
+diff --git a/src/slide.c b/src/slide.c
+index 4b94130..c04e1dc 100644
+--- a/src/slide.c
++++ b/src/slide.c
+@@ -37,11 +37,11 @@ static unsigned int *prev;      /* previous posiion associated with hash */
+ static struct encode_option encode_define[2] = {
+ #if defined(__STDC__) || defined(AIX)
+     /* lh1 */
+-    {(void (*) ()) output_dyn,
++    { output_dyn,
+      (void (*) ()) encode_start_fix,
+      (void (*) ()) encode_end_dyn},
+     /* lh4, 5, 6, 7 */
+-    {(void (*) ()) output_st1,
++    { output_st1,
+      (void (*) ()) encode_start_st1,
+      (void (*) ()) encode_end_st1}
+ #else
